@@ -1,33 +1,13 @@
 #!/usr/bin/env node
-const fs = require('fs')
-const envFile = `${__dirname}/../config/.env`;
-if (!fs.existsSync(envFile)) {
-    console.log(`Please create environment file first: ${envFile}`)
-    process.exit();
-}
-require('dotenv').config({ path: envFile})
+'use strict';
 
-const USERS = require('../config/reviewers');
-const REVIEWERS = JSON.parse(process.env.Reviewers).map((user) => USERS[user])
-
-const bitbucketOptions = {
-    auth: {
-        username: process.env.BitBucketUser,
-        password: process.env.BitBucketPass,
-    },
-    repo_slug: process.env.Repository,
-    workspace: process.env.Workspace,
-    // remove api updates notice
-    notice: false
-}
-const gitOptions = { baseDir: process.cwd() };
+const config = require('../libs/configure');
 
 const readlineSync = require('readline-sync');
-const { Bitbucket } = require('bitbucket');
+const {Bitbucket} = require('bitbucket');
 const simpleGit = require('simple-git');
-
-const bitbucket = new Bitbucket(bitbucketOptions);
-const git = simpleGit(gitOptions);
+const bitbucket = new Bitbucket(config.bitbucket);
+const git = simpleGit({baseDir: process.cwd()});
 
 git.branch({'--sort': '-committerdate'})
     // Get Current and Latest Release Branches
@@ -80,19 +60,19 @@ git.branch({'--sort': '-committerdate'})
                         name: pr.sourceBranch
                     }
                 },
-                reviewers: REVIEWERS,
+                reviewers: config.reviewers,
             },
-            workspace: bitbucketOptions.workspace,
-            repo_slug: bitbucketOptions.repo_slug,
+            workspace: config.bitbucket.workspace,
+            repo_slug: config.bitbucket.repo_slug,
         };
         return bitbucket.pullrequests.create(pullRequestParams)
     })
     .then((res) => {
         const prId = res.data.id;
-        console.log(`PR created: https://bitbucket.org/${bitbucketOptions.workspace}/${bitbucketOptions.repo_slug}/pull-requests/${prId}`)
+        console.log(`PR created: https://bitbucket.org/${config.bitbucket.workspace}/${config.bitbucket.repo_slug}/pull-requests/${prId}`)
     }).catch((e) => {
-        console.log(e)
-    });
+    console.log(e)
+});
 
 
 
