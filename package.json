@@ -1,0 +1,23 @@
+{
+  "name": "pullrequests",
+  "version": "1.0.0",
+  "description": "Create BitBuckets Pull Requests",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/izbushka/pullrequests.git"
+  },
+  "keywords": [
+    "bitbacket",
+    "pullrequests"
+  ],
+  "author": "Oleg Muraviov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/izbushka/pullrequests/issues"
+  },
+  "homepage": "https://github.com/izbushka/pullrequests#readme"
+}
