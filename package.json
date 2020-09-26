@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Create BitBuckets Pull Requests",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,5 +20,11 @@
   "bugs": {
     "url": "https://github.com/izbushka/pullrequests/issues"
   },
-  "homepage": "https://github.com/izbushka/pullrequests#readme"
+  "homepage": "https://github.com/izbushka/pullrequests#readme",
+  "dependencies": {
+    "bitbucket": "^2.4.1",
+    "dotenv": "^8.2.0",
+    "readline-sync": "^1.4.10",
+    "simple-git": "^2.20.1"
+  }
 }
