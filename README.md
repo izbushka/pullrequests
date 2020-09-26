@@ -5,6 +5,7 @@ Helper to Create BitBuckets Pull Request
 npm install
 
 ## Usage
-### Creata Pull Requests
-#### from the current branch to the latest release
-node /path-to-this-repo*/bin/create-pull-request.js*
+### Create Pull Requests
+#### From the current branch to the latest release
+in your project repository run:
+```node /path-to-this-repo/bin/create-pull-request.js```
