@@ -2,7 +2,8 @@
 Helper to Create BitBuckets Pull Request
 
 ## Installation
-npm install
+`npm install`
+create `.env` file in `config` directory using example `.env.example`
 
 ## Usage
 ### Create Pull Requests
