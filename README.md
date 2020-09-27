@@ -10,7 +10,8 @@ create `.env` file in `config` directory using example `.env.example`
 **It finds automatically current release branch by 'release/' prefix and last commit date in it**
 
 ### Create Pull Requests
-#### From the current branch to the latest release
+From the current branch to the latest release by default but you'd be asked to change
+ 
 in your project repository run:
 ```node /path-to-this-repo/bin/create-pull-request.js```
 
