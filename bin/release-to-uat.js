@@ -37,14 +37,14 @@ const branches = ['develop', 'uat'];
 
             const pr = await createPR(prData);
 
-            if (!pr?.data?.id) {
+            if (!pr || !pr.data || pr.data.id) {
                 console.log('Unable to create PR')
                 process.exit();
             }
 
             const res = await mergePR(pr.data.id)
 
-            if (res?.data?.state !== 'MERGED') {
+            if (!res || !res.data || res.data.state !== 'MERGED') {
                 console.log(`Unable to merge PR ${pr.data.id}`)
                 process.exit();
             }
@@ -77,7 +77,7 @@ function getReleaseBranch() {
 function createPR(pr) {
     const pullRequestParams = {
         _body: {
-            close_source_branch: true,
+            close_source_branch: false,
             title: pr.title,
             description: pr.description,
             destination: {
@@ -89,8 +89,8 @@ function createPR(pr) {
                 branch: {
                     name: pr.sourceBranch
                 }
-            },
-            reviewers: pr.reviewers || config.reviewers,
+            }
+            //reviewers: pr.reviewers || config.reviewers,
         },
         workspace: config.bitbucket.workspace,
         repo_slug: config.bitbucket.repo_slug,

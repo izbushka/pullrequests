@@ -41,7 +41,10 @@ git.branch({'--sort': '-committerdate'})
 
         let description = readlineSync.question(`Pull Request Description: `);
 
-        return {sourceBranch, targetBranch, title, description};
+        let close = readlineSync.question('Close source branch after merge [Y/n]: ');
+        close = close !== 'n';
+
+        return {sourceBranch, targetBranch, title, description,};
     })
     // Create Pull Request
     .then((pr) => {
@@ -68,11 +71,43 @@ git.branch({'--sort': '-committerdate'})
         return bitbucket.pullrequests.create(pullRequestParams)
     })
     .then((res) => {
-        const prId = res.data.id;
-        console.log(`PR created: https://bitbucket.org/${config.bitbucket.workspace}/${config.bitbucket.repo_slug}/pull-requests/${prId}`)
-    }).catch((e) => {
-    console.log(e)
-});
+        try {
+            const prId = res.data.id;
+            console.log(`PR created: https://bitbucket.org/${config.bitbucket.workspace}/${config.bitbucket.repo_slug}/pull-requests/${prId}`);
+            if (prId) {
+                let ok = readlineSync.question(`Merge branch without approval [y/N]: `);
+                if (ok === 'y') {
+                    return mergePR(prId);
+                }
+            }
+            return false;
+        } catch {
+            console.log('Looks like PR is not created');
+            return false;
+        }
+    })
+    .then((res) => {
+        if (!res || !res.data) {
+            return;
+        }
+
+        if (res.data.state !== 'MERGED') {
+            console.log(`Unable to merge PR ${pr.data.id}`)
+            process.exit();
+        }
+
+        console.log('Merged successfully');
+    })
+    .catch((e) => {
+        console.log(e)
+    });
 
 
-
+function mergePR(pull_request_id) {
+    const pullRequestParams = {
+        workspace: config.bitbucket.workspace,
+        repo_slug: config.bitbucket.repo_slug,
+        pull_request_id
+    };
+    return bitbucket.pullrequests.merge(pullRequestParams)
+}
