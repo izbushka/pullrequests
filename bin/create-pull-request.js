@@ -119,10 +119,10 @@ function mergePR(pull_request_id) {
 
 function selectBranch(branches) {
     console.log("Select branch: ");
-    branches.all.forEach((item, idx) => {
+    branches.forEach((item, idx) => {
         console.log(`   ${idx}. ${item}`);
     });
     let selectedBranch = readlineSync.question('Branch id: ');   
-    console.log(`Selected branch: ${branches.all[selectedBranch]}`);
-    return branches.all[selectedBranch];
+    console.log(`Selected branch: ${branches[selectedBranch]}`);
+    return branches[selectedBranch];
 }
