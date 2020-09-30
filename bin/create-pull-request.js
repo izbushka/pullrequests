@@ -20,7 +20,7 @@ git.branch({'--sort': '-committerdate'})
             (branch) => branch.current
         );
 
-        return {release, current}
+        return {release, current, all: Object.values(branches.branches).map((item) => item.name)}
     })
     // Ask for PR details
     .then((branches) => {
@@ -29,9 +29,17 @@ git.branch({'--sort': '-committerdate'})
             sourceBranch = branches.current.name;
         }
 
-        let targetBranch = readlineSync.question(`Target branch [${branches.release.name}]: `);
+        let targetBranch = readlineSync.question(`Target branch (L - list) [${branches.release.name}]: `);
         if (!targetBranch) {
             targetBranch = branches.release.name;
+        } else if (targetBranch === 'L') {
+            console.log("Select branch: ");
+            branches.all.forEach((item, idx) => {
+                console.log(`   ${idx}. ${item}`);
+            });
+            let selectedBranch = readlineSync.question('Branch id: ');   
+            targetBranch = branches.all[selectedBranch];
+            console.log(`Target branch: ${targetBranch}`);
         }
 
         let title = readlineSync.question(`Pull Request Title [${branches.current.label}]: `);
@@ -73,7 +81,7 @@ git.branch({'--sort': '-committerdate'})
     .then((res) => {
         try {
             const prId = res.data.id;
-            console.log(`PR created: https://bitbucket.org/${config.bitbucket.workspace}/${config.bitbucket.repo_slug}/pull-requests/${prId}`);
+            console.log(`"-----------\nPR CREATED: https://bitbucket.org/${config.bitbucket.workspace}/${config.bitbucket.repo_slug}/pull-requests/${prId}\n----------`);
             if (prId) {
                 let ok = readlineSync.question(`Merge branch without approval [y/N]: `);
                 if (ok === 'y') {
@@ -99,7 +107,8 @@ git.branch({'--sort': '-committerdate'})
         console.log('Merged successfully');
     })
     .catch((e) => {
-        console.log(e)
+        console.log("-----------\nGOT ERROR!\n    " + e.message);
+        console.log("    MESSAGE: " + e.error.error.message + "\n----------\n");
     });
 
 
