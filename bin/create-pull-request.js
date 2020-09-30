@@ -24,7 +24,7 @@ git.branch({'--sort': '-committerdate'})
     })
     // Ask for PR details
     .then((branches) => {
-        let sourceBranch = readlineSync.question(`Source branch [${branches.current.name}]: `);
+        let sourceBranch = readlineSync.question(`Source branch (L - list) [${branches.current.name}]: `);
         if (!sourceBranch) {
             sourceBranch = branches.current.name;
         } else if (targetBranch === 'L') {
