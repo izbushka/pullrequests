@@ -27,7 +27,7 @@ git.branch({'--sort': '-committerdate'})
         let sourceBranch = readlineSync.question(`Source branch (L - list) [${branches.current.name}]: `);
         if (!sourceBranch) {
             sourceBranch = branches.current.name;
-        } else if (targetBranch === 'L') {
+        } else if (sourceBranch === 'L') {
             sourceBranch = selectBranch(branches.all);
         }
 
