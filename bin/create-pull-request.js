@@ -27,19 +27,15 @@ git.branch({'--sort': '-committerdate'})
         let sourceBranch = readlineSync.question(`Source branch [${branches.current.name}]: `);
         if (!sourceBranch) {
             sourceBranch = branches.current.name;
+        } else if (targetBranch === 'L') {
+            sourceBranch = selectBranch(branches.all);
         }
 
         let targetBranch = readlineSync.question(`Target branch (L - list) [${branches.release.name}]: `);
         if (!targetBranch) {
             targetBranch = branches.release.name;
         } else if (targetBranch === 'L') {
-            console.log("Select branch: ");
-            branches.all.forEach((item, idx) => {
-                console.log(`   ${idx}. ${item}`);
-            });
-            let selectedBranch = readlineSync.question('Branch id: ');   
-            targetBranch = branches.all[selectedBranch];
-            console.log(`Target branch: ${targetBranch}`);
+            targetBranch = selectBranch(branches.all);
         }
 
         let title = readlineSync.question(`Pull Request Title [${branches.current.label}]: `);
@@ -119,4 +115,14 @@ function mergePR(pull_request_id) {
         pull_request_id
     };
     return bitbucket.pullrequests.merge(pullRequestParams)
+}
+
+function selectBranch(branches) {
+    console.log("Select branch: ");
+    branches.all.forEach((item, idx) => {
+        console.log(`   ${idx}. ${item}`);
+    });
+    let selectedBranch = readlineSync.question('Branch id: ');   
+    console.log(`Selected branch: ${branches.all[selectedBranch]}`);
+    return branches.all[selectedBranch];
 }
