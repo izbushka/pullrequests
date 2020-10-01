@@ -6,6 +6,8 @@ Helper to Create BitBuckets Pull Request
 
 create `.env` file in `config` directory using example `.env.example`
 
+Probably you'll need to add reviewers in `/config/reviewers.json`
+
 ## Usage
 **It finds automatically current release branch by 'release/' prefix and last commit date in it**
 
