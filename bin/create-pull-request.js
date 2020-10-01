@@ -20,7 +20,7 @@ git.branch({'--sort': '-committerdate'})
             (branch) => branch.current
         );
 
-        return {release, current, all: Object.values(branches.branches).map((item) => item.name)}
+        return {release: release | {}, current, all: Object.values(branches.branches).map((item) => item.name)}
     })
     // Ask for PR details
     .then((branches) => {
@@ -104,7 +104,10 @@ git.branch({'--sort': '-committerdate'})
     })
     .catch((e) => {
         console.log("-----------\nGOT ERROR!\n    " + e.message);
-        console.log("    MESSAGE: " + e.error.error.message + "\n----------\n");
+        if (e.error && e.error.error) {
+            console.log("    MESSAGE: " + e.error.error.message + "\n----------\n");
+            console.log(e)
+        }
     });
 
 

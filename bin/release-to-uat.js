@@ -28,8 +28,8 @@ const branches = ['develop', 'uat'];
             }
 
             const prData = {
-                sourceBranch: branches[0],
-                targetBranch: branches[1],
+                sourceBranch: branches[i],
+                targetBranch: branches[1 + 1],
                 title,
                 description: '',
                 reviewers: [],
@@ -37,7 +37,7 @@ const branches = ['develop', 'uat'];
 
             const pr = await createPR(prData);
 
-            if (!pr || !pr.data || pr.data.id) {
+            if (!pr || !pr.data || !pr.data.id) {
                 console.log('Unable to create PR')
                 process.exit();
             }
