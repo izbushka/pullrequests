@@ -20,7 +20,7 @@ git.branch({'--sort': '-committerdate'})
             (branch) => branch.current
         );
 
-        return {release: release | {}, current, all: Object.values(branches.branches).map((item) => item.name)}
+        return {release: release || {}, current, all: Object.values(branches.branches).map((item) => item.name)}
     })
     // Ask for PR details
     .then((branches) => {
