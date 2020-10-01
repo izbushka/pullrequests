@@ -29,7 +29,7 @@ const branches = ['develop', 'uat'];
 
             const prData = {
                 sourceBranch: branches[i],
-                targetBranch: branches[1 + 1],
+                targetBranch: branches[i + 1],
                 title,
                 description: '',
                 reviewers: [],
