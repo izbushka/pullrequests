@@ -7,7 +7,7 @@ const simpleGit = require('simple-git');
 const bitbucket = new Bitbucket(config.bitbucket);
 const git = simpleGit({baseDir: process.cwd()});
 
-const branches = ['develop', 'uat'];
+const branches = ['develop', 'uat', 'master'];
 
 (async () => {
     const release = await getReleaseBranch();
@@ -22,8 +22,14 @@ const branches = ['develop', 'uat'];
         for (let i = 0; i < branches.length - 1; i++) {
             console.log(`Creating pull request ${branches[i]} -> ${branches[i + 1]}`);
 
-            let ok = readlineSync.question('Continue [y/N]: ');
-            if (ok !== 'y') {
+            const positive = branches[i + 1] === 'master' ? 'yes' : 'y';
+
+            let ok = readlineSync.question(`Continue [${positive}/N/skip]: `);
+            if (ok === 'skip') {
+                continue;
+            }
+            
+            if (ok !== positive) {
                 process.exit();
             }
 
