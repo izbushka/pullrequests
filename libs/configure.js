@@ -1,7 +1,11 @@
 'use strict';
 
 const fs = require('fs')
-const envFile = `${__dirname}/../config/.env`;
+const project = process.env["PROJECT"];
+const envFile = project
+    ? `${__dirname}/../config/.env-${project}`
+    : `${__dirname}/../config/.env`;
+
 if (!fs.existsSync(envFile)) {
     console.log(`Please create environment file first: ${envFile}`)
     process.exit();
